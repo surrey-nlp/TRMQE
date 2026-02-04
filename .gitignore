@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logging
+wandb/
+outputs/
+*.log
+
+# Data and checkpoints (users build/train themselves)
+data/
+checkpoints/
+
+# Jupyter
+.ipynb_checkpoints/

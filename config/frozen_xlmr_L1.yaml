@@ -1,0 +1,25 @@
+# L-cycle ablation: L=1 (2 effective layers)
+# Paper Table 3: TRM (frz, L=1) - achieves 0.321 Spearman
+#
+# Key finding: L=1 severely underperforms (0.321 vs 0.370 with L=4)
+# Demonstrates that weight sharing depth is critical
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: True
+
+  L_cycles: 1  # Single pass (2 effective layers)
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+
+  hidden_size: 512
+
+wandb_tags: [Frozen, Ablation, L-cycle]
+run_name: frozen_xlmr_L1

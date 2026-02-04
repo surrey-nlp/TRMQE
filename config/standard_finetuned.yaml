@@ -1,0 +1,30 @@
+# Standard 8-layer transformer with FINE-TUNED embeddings
+# Paper Table 3: Std 8-layer (ft) - achieves 0.336 Spearman
+#
+# Comparison baseline to isolate effect of weight sharing
+# Architecture: 8 unique layers applied once (no weight sharing)
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: False  # Fine-tune embeddings
+
+  # STANDARD TRANSFORMER: 8 unique layers, no recycling
+  L_layers: 8           # 8 unique transformer layers
+  L_cycles: 1           # Apply once (no weight sharing)
+
+  # Per-layer input injection provides gradient highways
+  per_layer_input_injection: True
+
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+  hidden_size: 512
+
+wandb_tags: [FineTuned, Standard, Comparison]
+run_name: standard_8layer_finetuned

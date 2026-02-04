@@ -1,0 +1,25 @@
+# L-cycle ablation: L=6 (12 effective layers)
+# Paper Table 3: TRM (frz, L=6) - achieves 0.288 Spearman
+#
+# Key finding: Too many cycles degrades performance with frozen embeddings
+# L=4 is the sweet spot
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: True
+
+  L_cycles: 6  # 12 effective layers - too deep
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+
+  hidden_size: 512
+
+wandb_tags: [Frozen, Ablation, L-cycle]
+run_name: frozen_xlmr_L6

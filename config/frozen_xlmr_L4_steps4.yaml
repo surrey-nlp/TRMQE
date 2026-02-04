@@ -1,0 +1,25 @@
+# External iteration ablation: 4 external steps
+# Paper Table 3: TRM (frz, L=4, 4 steps)
+#
+# Key finding: External iteration HURTS performance
+# 1-step is optimal (no benefit from iterative refinement)
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: True
+
+  L_cycles: 4              # Optimal internal depth
+  halt_max_steps: 4        # 4 external steps
+  halt_exploration_prob: 0.1
+
+  hidden_size: 512
+
+wandb_tags: [Frozen, Ablation, ExternalSteps]
+run_name: frozen_xlmr_L4_steps4

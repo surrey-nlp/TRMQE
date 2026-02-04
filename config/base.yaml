@@ -1,0 +1,86 @@
+# Base configuration for TRM-QE
+# All experiment configs inherit from this
+
+hydra:
+  output_subdir: null
+
+# Data paths
+data_paths:
+  - data/qe-lowres
+data_paths_test: []
+
+# Training hyperparameters
+epochs: 100
+eval_interval: 10
+global_batch_size: 256
+gradient_accumulation_steps: 1
+
+# Optimizer
+lr: 1e-4
+lr_min_ratio: 0.1
+lr_warmup_steps: 100
+beta1: 0.9
+beta2: 0.99
+weight_decay: 0.1
+
+# Puzzle embedding
+puzzle_emb_lr: 1e-4
+puzzle_emb_weight_decay: 0.1
+
+# Architecture
+arch:
+  name: trm@TinyRecursiveReasoningModel_ACTV1
+  loss:
+    name: losses_qe@QERegressionLossHead
+    loss_type: mse
+
+  # TRM parameters
+  H_cycles: 3
+  L_cycles: 4
+  H_layers: 0
+  L_layers: 2
+
+  # Transformer dimensions
+  hidden_size: 512
+  num_heads: 8
+  expansion: 4
+
+  # Position encodings
+  pos_encodings: rope
+  forward_dtype: bfloat16
+
+  # ACT settings (disabled by default)
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+  no_ACT_continue: True
+
+  # Puzzle/language embedding
+  puzzle_emb_ndim: 64
+  puzzle_emb_len: 1
+  mlp_t: False
+
+  # Pretrained embeddings (mT5-small default)
+  pretrained_embeddings: google/mt5-small
+  freeze_embeddings: False
+  use_pretrained_encoder: False
+
+  # Per-layer input injection (for standard transformer comparison)
+  per_layer_input_injection: False
+
+# Checkpointing
+checkpoint_every_eval: True
+checkpoint_keep_latest_only: True
+min_eval_interval: 0
+
+# EMA
+ema: False
+ema_rate: 0.999
+
+# Random seed
+seed: 0
+
+# Device selection (auto, cpu, cuda, mps)
+device: auto
+
+# W&B
+wandb_tags: []

@@ -1,0 +1,26 @@
+# Frozen mT5-small embeddings (L=4)
+# Paper Table 3: TRM (frz mT5, L=4)
+#
+# Tests if frozen embedding success generalizes to weaker embeddings
+# mT5-small (512-dim) vs XLM-R-large (1024-dim)
+
+defaults:
+  - base
+  - _self_
+
+# mT5 tokenized dataset
+data_paths:
+  - data/qe-lowres
+
+arch:
+  pretrained_embeddings: google/mt5-small  # 512-dim, no projection needed
+  freeze_embeddings: True
+
+  L_cycles: 4
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+
+  hidden_size: 512
+
+wandb_tags: [Frozen, mT5, Ablation]
+run_name: frozen_mt5small_L4

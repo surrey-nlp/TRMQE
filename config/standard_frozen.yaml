@@ -1,0 +1,31 @@
+# Standard 8-layer transformer with FROZEN embeddings
+# Paper Table 3: Std 8-layer (frz) - achieves 0.290 Spearman with 27M trainable params
+#
+# Comparison baseline to isolate effect of weight sharing
+# Architecture: 8 unique layers applied once (no weight sharing)
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: True
+
+  # STANDARD TRANSFORMER: 8 unique layers, no recycling
+  L_layers: 8           # 8 unique transformer layers
+  L_cycles: 1           # Apply once (no weight sharing)
+
+  # Per-layer input injection provides gradient highways
+  # (similar to what L_cycles provides for TRM)
+  per_layer_input_injection: True
+
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+  hidden_size: 512
+
+wandb_tags: [Frozen, Standard, Comparison]
+run_name: standard_8layer_frozen

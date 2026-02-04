@@ -1,0 +1,26 @@
+# Fine-tuned XLM-R embeddings with L=2 cycles
+# Paper Table 3: TRM (ft, L=2) - achieves 0.369 Spearman with 262M trainable params
+#
+# Baseline for comparison with frozen embeddings
+# L=2 is optimal for fine-tuned (4 effective layers)
+
+defaults:
+  - base
+  - _self_
+
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: False  # Fine-tune embeddings
+
+  # L=2 optimal for fine-tuned (4 effective layers)
+  L_cycles: 2
+  halt_max_steps: 1
+  halt_exploration_prob: 0.0
+
+  hidden_size: 512
+
+wandb_tags: [FineTuned, Baseline]
+run_name: finetuned_xlmr_L2

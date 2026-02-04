@@ -1,0 +1,28 @@
+# MAIN RESULT: Frozen XLM-R embeddings with L=4 cycles
+# Paper Table 3: TRM (frz, L=4) - achieves 0.370 Spearman with 7M trainable params
+#
+# Key finding: Frozen embeddings MATCH fine-tuned performance (0.370 vs 0.369)
+# with 37x fewer trainable parameters (7M vs 262M)
+
+defaults:
+  - base
+  - _self_
+
+# Use XLM-R tokenized dataset
+data_paths:
+  - data/qe-lowres-xlmr
+
+arch:
+  # XLM-R large (1024-dim -> 512-dim via SVD projection)
+  pretrained_embeddings: xlm-roberta-large
+  freeze_embeddings: True  # FROZEN - only train 7M TRM core
+
+  # L=4 optimal for frozen embeddings (8 effective layers)
+  L_cycles: 4
+  halt_max_steps: 1        # No external iteration
+  halt_exploration_prob: 0.0
+
+  hidden_size: 512
+
+wandb_tags: [Frozen, Main]
+run_name: frozen_xlmr_L4
